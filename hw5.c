@@ -40,17 +40,18 @@ int lex();
 /******************************************************/
 /* main driver */
 int main(int argc, char **argv) {
-	/* Open the input data file and process its contents */
-	// default behavior: read from front.in
+	/* Open input and prepare stream based on arguments:
+	   - no args: read default file "front.in"
+	   - one arg: treat arg as an expression string
+	   - -f filename: read from the specified file
+	*/
 	if (argc == 1) {
 		if ((in_fp = fopen("front.in", "r")) == NULL) {
 			printf("ERROR - cannot open front.in \n");
 			return 1;
 		}
-		// alternative behavior: read from command line argument or file
-		// specified by -
 	} else if (argc == 2) {
-		/* Single argument: treat as expression string */
+		/* Single argument: expression string (not "-f") */
 		if (strcmp(argv[1], "-f") == 0) {
 			printf("ERROR - missing filename after -f\n");
 			return 1;
@@ -62,9 +63,8 @@ int main(int argc, char **argv) {
 		}
 		fprintf(in_fp, "%s\n", argv[1]);
 		rewind(in_fp);
-		// alternative behavior: read from file specified by -f
 	} else {
-		/* Expect -f filename */
+		/* Expect "-f filename" */
 		if (strcmp(argv[1], "-f") == 0 && argc >= 3) {
 			if ((in_fp = fopen(argv[2], "r")) == NULL) {
 				printf("ERROR - cannot open %s\n", argv[2]);
