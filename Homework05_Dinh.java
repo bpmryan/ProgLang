@@ -1,3 +1,9 @@
+/**
+ * Inputs for cli:
+ * java Homework05_Dinh "(sum + 47) / total"
+ * java Homework05_Dinh "(count * 10 + 2) / (total - sum)"
+ */
+
 import java.io.*;
 
 public class Homework05_Dinh {
