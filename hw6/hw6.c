@@ -5,6 +5,7 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h> 
 
 /* Global declarations */
 /* Variables */
@@ -25,7 +26,11 @@ int lex();
 void expr();
 void term();
 void factor();
-void error();
+
+void error() {
+    printf("Syntax Error: Unexpected token %d ('%s')\n", nextToken, lexeme);
+    exit(1);
+}
 
 /* Character classes */
 #define LETTER 0
@@ -82,12 +87,19 @@ int main(int argc, char **argv) {
 		}
 	}
 
-	getChar();
-	do {
-		lex();
-	} while (nextToken != EOF);
+	/* Start the process */
+    getChar(); // Prime the character stream
+    lex();     // Prime the token stream
+    expr();    // Start the recursive-descent parser
 
-	return 0;
+	if (nextToken == EOF) {
+        printf("Parsing successfully completed.\n");
+    } else {
+        printf("Parsing failed: Trailing characters found.\n");
+    }
+
+	fclose(in_fp);
+    return 0;
 }
 
 /*****************************************************/
@@ -228,7 +240,6 @@ int lex() {
     Parses strings in the language generate by the rule:
     <expr> -> <term> {(+ | -) -> <term>}
 */
-
 void expr()
 {
     printf("Enter <expr>\n");

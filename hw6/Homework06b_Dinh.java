@@ -6,7 +6,7 @@
 
 import java.io.*;
 
-public class Homework05_Dinh {
+public class Homework06b_Dinh {
 
     // global variables
     static int charClass;
@@ -169,6 +169,55 @@ public class Homework05_Dinh {
                 break;
         }
         System.out.printf("Next token is: %d, Next lexeme is %s\n", nextToken, lexeme.toString());
+    }
+
+    // hw6
+    private static void expr() throws IOException{
+        System.out.println("Enter <expr>\n");
+
+        //parse  
+        term();
+
+        while (nextToken == ADD_OP ||nextToken == SUB_OP){
+            lex();
+            term();
+        }
+        System.out.println("Exit <expr>\n");
+    }
+
+    private static void term() throws IOException{
+        System.out.println("Enter <term>\n");
+
+        // parse the first factor
+        factor();
+
+        while (nextToken == MULT_OP || nextToken == DIV_OP) {
+            lex();
+            factor();
+        }
+        System.out.println("Exit <term>\n");
+    }
+
+    private static void factor() throws IOException{
+        System.out.println("Enter <factor>\n");
+
+        // Determine which RHS
+        if (nextToken == IDENT || nextToken == INT_LIT) {
+            lex();
+        } else {
+            if (nextToken == LEFT_PAREN) {
+                lex();
+                expr();
+                if (nextToken == RIGHT_PAREN) {
+                    lex();
+                } else {
+                    error();
+                }
+            } else {
+                error();
+            }
+        }
+        System.out.println("Exit <factor>\n");
     }
 
 }
