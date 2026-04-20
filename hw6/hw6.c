@@ -1,3 +1,9 @@
+/**
+ * How to run code in terminal
+ * gcc hw6.c -o hw6.exe 
+ * ./hw6 "(a + b) * 5"
+ */
+
 // hw5 code
 /* front.c - a lexical analyzer system for simple
              arithmetic expressions */
