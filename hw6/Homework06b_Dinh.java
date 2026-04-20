@@ -1,3 +1,4 @@
+
 /**
  * Inputs for cli:
  * java Homework05_Dinh "(sum + 47) / total"
@@ -16,6 +17,11 @@ public class Homework06b_Dinh {
     static int token;
     static int nextToken;
     static BufferedReader reader;
+
+    private static void error() {
+        System.err.printf("Syntax Error: Unexpected token %d ('%s')%n", nextToken, lexeme.toString());
+        System.exit(1);
+    }
 
     // character class
     static final int LETTER = 0;
@@ -46,12 +52,9 @@ public class Homework06b_Dinh {
                 reader = new BufferedReader(new FileReader(args[1]));
             }
 
-            // function declarations
             getChar();
-
-            do {
-                lex();
-            } while (nextToken != EOF);
+            lex();
+            expr();
 
         } catch (FileNotFoundException e) {
             System.out.println("Error cannot open file");
@@ -61,7 +64,7 @@ public class Homework06b_Dinh {
 
     }
 
-    private static int lookup(char ch) throws IOException{
+    private static int lookup(char ch) throws IOException {
         switch (ch) {
             case '(':
                 addChar();
@@ -100,7 +103,6 @@ public class Homework06b_Dinh {
         }
         return nextToken;
     }
-
 
     private static void addChar() throws IOException {
         if (lexeme.length() <= 98) {
@@ -159,7 +161,7 @@ public class Homework06b_Dinh {
                 break;
             // parentheses and operators
             case UNKNOWN:
-                lookup((char)nextChar);
+                lookup((char) nextChar);
                 getChar();
                 break;
             // eof
@@ -172,20 +174,20 @@ public class Homework06b_Dinh {
     }
 
     // hw6
-    private static void expr() throws IOException{
+    private static void expr() throws IOException {
         System.out.println("Enter <expr>\n");
 
-        //parse  
+        // parse
         term();
 
-        while (nextToken == ADD_OP ||nextToken == SUB_OP){
+        while (nextToken == ADD_OP || nextToken == SUB_OP) {
             lex();
             term();
         }
         System.out.println("Exit <expr>\n");
     }
 
-    private static void term() throws IOException{
+    private static void term() throws IOException {
         System.out.println("Enter <term>\n");
 
         // parse the first factor
@@ -198,7 +200,7 @@ public class Homework06b_Dinh {
         System.out.println("Exit <term>\n");
     }
 
-    private static void factor() throws IOException{
+    private static void factor() throws IOException {
         System.out.println("Enter <factor>\n");
 
         // Determine which RHS
